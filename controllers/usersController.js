@@ -17,15 +17,17 @@ const {
 
 async function signUp(req, res, next) {
     try {
-        const { email, firstName, password, rePassword } = req.body;
+        const { email, password, rePassword, firstName, lastName, phoneNumber } = req.body;
 
         const newUser = {
             id: uuidv4(),
             date: Date.now(),
             email: email,
-            firstName: firstName,
             password: password,
-            rePassword: rePassword
+            rePassword: rePassword,
+            firstName: firstName,
+            lastName: lastName,
+            phoneNumber: phoneNumber,
         };
 
         console.log(newUser);
