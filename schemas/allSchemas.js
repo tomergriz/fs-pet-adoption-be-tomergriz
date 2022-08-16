@@ -9,7 +9,7 @@
       phoneNumber: {type: "string"},
 
     },
-    required: ["email"],
+    required: ["email", "password"],
     additionalProperties: false
   }
 

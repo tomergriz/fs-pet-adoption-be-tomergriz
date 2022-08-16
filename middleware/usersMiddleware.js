@@ -9,7 +9,7 @@ function passwordsMatch(req, res, next) {
     res.status(400).send("Password don't match");
 }
 
-function doesUserExist(req, res, next) {
+function doesEmailExist(req, res, next) {
     const user = getUserByEmailModel(req.body.email);
 
     if (user) {
@@ -20,4 +20,4 @@ function doesUserExist(req, res, next) {
     next();
 }
 
-module.exports = { passwordsMatch, doesUserExist };
+module.exports = { passwordsMatch, doesEmailExist };
