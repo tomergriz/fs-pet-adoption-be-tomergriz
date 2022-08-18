@@ -6,7 +6,7 @@
       rePassword: {type: "string", minLength: 2},
       firstName: {type: "string"},
       lastName: {type: "string"},
-      phoneNumber: {type: "string"},
+      phone: {type: "string"},
 
     },
     required: ["email", "password"],

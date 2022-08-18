@@ -17,7 +17,8 @@ const {
 
 async function signUp(req, res, next) {
     try {
-        const { email, password, rePassword, firstName, lastName, phoneNumber } = req.body;
+        console.log("1", req);
+        const { email, password, rePassword, firstName, lastName, phoneNumber } = req.query;
 
         const newUser = {
             id: uuidv4(),
