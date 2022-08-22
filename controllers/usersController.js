@@ -1,7 +1,7 @@
 const { v4: uuidv4 } = require("uuid");
 const {
     getAllUsersModel,
-    addUserModel,
+    signUpModel,
     getUserByEmailModel,
     deleteUserModel,
 } = require("../models/userModel");
@@ -15,25 +15,22 @@ const {
 //   }
 // }
 
-async function signUp(req, res, next) {
+async function signUp(req, res) {
     try {
-        console.log("1", req);
-        const { email, password, rePassword, firstName, lastName, phoneNumber } = req.query;
-
+        const { email, password, firstName, lastName, phoneNumber } = req.body;
+        
         const newUser = {
             id: uuidv4(),
             date: Date.now(),
             email: email,
             password: password,
-            rePassword: rePassword,
             firstName: firstName,
             lastName: lastName,
             phoneNumber: phoneNumber,
         };
 
-        console.log(newUser);
 
-        const user = addUserModel(newUser);
+        const user = await signUpModel(newUser);
         if (user) {
             res.send(newUser);
             return;
@@ -43,6 +40,16 @@ async function signUp(req, res, next) {
         next(err);
     }
 }
+
+function login(req, res) {
+    try {
+      const { user } = req.body;
+      const token = jwt.sign({ id: user.userId }, process.env.TOKEN_SECRET, { expiresIn: "2h" });
+      res.send({ token: token, user: user.name });
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
 // async function deleteNote(req, res) {
 //   try {
@@ -60,4 +67,4 @@ async function signUp(req, res, next) {
 //   }
 // }
 
-module.exports = { signUp /*, getAllNotes, , deleteNote*/ };
+module.exports = { signUp, login  /*, getAllNotes, , deleteNote*/ };

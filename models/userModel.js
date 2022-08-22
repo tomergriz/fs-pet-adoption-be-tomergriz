@@ -12,7 +12,7 @@ function getAllUsersModel() {
   }
 }
 
-function addUserModel(newUser) {
+function signUpModel(newUser) {
     try {
       const allUsers = getAllUsersModel();
       allUsers.push(newUser);
@@ -22,6 +22,7 @@ function addUserModel(newUser) {
       console.log(err);
     }
   }
+  
 function getUserByEmailModel(email) {
   try {
     const allUsers = getAllUsersModel();
@@ -43,4 +44,4 @@ function getUserByEmailModel(email) {
     }
   }
 
-module.exports = { getAllUsersModel, addUserModel,  getUserByEmailModel, deleteUserModel };
+module.exports = { getAllUsersModel, signUpModel,  getUserByEmailModel, deleteUserModel };
