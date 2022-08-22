@@ -3,24 +3,9 @@ const path = require("path");
 
 const pathToUsersDb = path.resolve(__dirname, "../database/usersDb.json");
 
-function getAllUsersModel() {
-  try {
-    const allUsers = fs.readFileSync(pathToUsersDb);
-    return JSON.parse(allUsers);
-  } catch (err) {
-    console.log(err);
-  }
-}
+const User = require ("./userModelMongoose")
 
-// function signUpModel(newUser) {
-//     try {
-    
-//       return true;
-//     } catch (err) {
-//       console.log(err);
-//     }
-//   }
-  
+ 
 function getUserByEmailModel(email) {
   try {
     const allUsers = getAllUsersModel();
@@ -31,15 +16,15 @@ function getUserByEmailModel(email) {
   }
 }
 
-  function deleteUserModel(userId) {
-    try {
-      const allUsers = getAllUsersModel();
-      const writeFileSync = allUsers.filter((user) => user.id !== userId);
-      fs.writeFileSync(pathToUsersDb, JSON.stringify(writeFileSync));
-      return true;
-    } catch (err) {
-      console.log(err);
-    }
+async function getAllUsersModel() {
+  try {
+    const allUsers = await User.find();
+    console.log("allUsers", allUsers);
+    return allUsers;
+  } catch (err) {
+    console.log(err);
   }
+}
 
-module.exports = { getAllUsersModel,  getUserByEmailModel, deleteUserModel };
+
+module.exports = { getAllUsersModel,  getUserByEmailModel };

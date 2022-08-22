@@ -16,13 +16,6 @@ mongoose.connect(db, () => {
 });
 
 
-
-
-// const addToDb = async () => {
-//     const userDb = await new dbCol({ name: "Tomer", type: "fqqqqr" });
-//     userDb.save();
-// };
-// addToDb()
 app.use(bodyParser.json());
 
 

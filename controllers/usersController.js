@@ -31,10 +31,9 @@ async function signUp(req, res, next) {
         });
 
         const user = await createUser.save();
-        // console.log(typeof createUser._id);
-        // console.log(user);
         if (user) {
             res.send(user);
+            console.log("res.send", user);
             return;
         }
     } catch (err) {
@@ -42,6 +41,20 @@ async function signUp(req, res, next) {
         next(err);
     }
 }
+
+async function getAllUsers(req, res) {
+    try {
+      const allUsers = await getAllUsersModel();
+      console.log("allUsersControl",allUsers);
+      res.send(allUsers);
+      return allUsers;
+    } catch(err) {
+      res.status(500).send(err);
+    }
+  }
+
+
+
 
 function login(req, res) {
     try {
@@ -54,6 +67,7 @@ function login(req, res) {
         console.log(err);
     }
 }
+
 
 // async function deleteNote(req, res) {
 //   try {
@@ -71,4 +85,4 @@ function login(req, res) {
 //   }
 // }
 
-module.exports = { signUp, login /*, getAllNotes, , deleteNote*/ };
+module.exports = { signUp, login, getAllUsers /*, getAllNotes, , deleteNote*/ };

@@ -6,7 +6,7 @@ const {
     passwordsMatch,
     hashPwd,
     isExistingUser,
-    verifyPwd,
+    getAllUsers,
 } = require("../middleware/usersMiddleware");
 
 const { validateBody } = require("../middleware/validateBody");
@@ -29,8 +29,11 @@ router.post(
     // verifyPwd,
     UsersController.login
 );
+router.get("/all", /*verifyToken, */ UsersController.getAllUsers)
+
+
+
 // router.post('/', validateBody, verifyToken, UsersController.getCurrentUser)
-// router.get('/all', verifyToken, UsersController.getAllUsers)
 // router.get('/:userId', verifyToken, UsersController.getUserById)
 // router.put('/:userId', verifyToken, UsersController.editUser)
 
