@@ -6,6 +6,8 @@ const PORT = process.env.PORT || 8080;
 const cors = require("cors");
 const dbCol = require("./monSchema");
 const usersRoute = require("./routes/usersRoute");
+const bodyParser = require('body-parser');
+
 // const petsRoute = require('./routes/petsRoute')
 const db = process.env.DATABASE;
 
@@ -14,11 +16,15 @@ mongoose.connect(db, () => {
 });
 
 
+
+
 // const addToDb = async () => {
 //     const userDb = await new dbCol({ name: "Tomer", type: "fqqqqr" });
 //     userDb.save();
 // };
 // addToDb()
+app.use(bodyParser.json());
+
 
 app.use(express.json());
 app.use(cors());

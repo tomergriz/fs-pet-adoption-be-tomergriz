@@ -12,16 +12,14 @@ function getAllUsersModel() {
   }
 }
 
-function signUpModel(newUser) {
-    try {
-      const allUsers = getAllUsersModel();
-      allUsers.push(newUser);
-      fs.writeFileSync(pathToUsersDb, JSON.stringify(allUsers));
-      return true;
-    } catch (err) {
-      console.log(err);
-    }
-  }
+// function signUpModel(newUser) {
+//     try {
+    
+//       return true;
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   }
   
 function getUserByEmailModel(email) {
   try {
@@ -44,4 +42,4 @@ function getUserByEmailModel(email) {
     }
   }
 
-module.exports = { getAllUsersModel, signUpModel,  getUserByEmailModel, deleteUserModel };
+module.exports = { getAllUsersModel,  getUserByEmailModel, deleteUserModel };

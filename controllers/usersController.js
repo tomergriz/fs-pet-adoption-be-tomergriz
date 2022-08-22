@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const { v4: uuidv4 } = require("uuid");
 const {
     getAllUsersModel,
@@ -5,6 +6,8 @@ const {
     getUserByEmailModel,
     deleteUserModel,
 } = require("../models/userModel");
+
+const newUser = require("../models/userModelMongoose");
 
 // async function getAllNotes(req, res) {
 //   try {
@@ -15,24 +18,23 @@ const {
 //   }
 // }
 
-async function signUp(req, res) {
+async function signUp(req, res, next) {
     try {
-        const { email, password, firstName, lastName, phoneNumber } = req.body;
-        
-        const newUser = {
-            id: uuidv4(),
+        const { email, password, firstName, lastName, phone  } = req.body;
+        const createUser = new newUser({
+            email,
+            password,
+            firstName,
+            lastName,
+            phone,
             date: Date.now(),
-            email: email,
-            password: password,
-            firstName: firstName,
-            lastName: lastName,
-            phoneNumber: phoneNumber,
-        };
+        });
 
-
-        const user = await signUpModel(newUser);
+        const user = await createUser.save();
+        // console.log(typeof createUser._id);
+        // console.log(user);
         if (user) {
-            res.send(newUser);
+            res.send(user);
             return;
         }
     } catch (err) {
@@ -43,13 +45,15 @@ async function signUp(req, res) {
 
 function login(req, res) {
     try {
-      const { user } = req.body;
-      const token = jwt.sign({ id: user.userId }, process.env.TOKEN_SECRET, { expiresIn: "2h" });
-      res.send({ token: token, user: user.name });
+        const { user } = req.body;
+        const token = jwt.sign({ id: user.userId }, process.env.TOKEN_SECRET, {
+            expiresIn: "2h",
+        });
+        res.send({ token: token, user: user.name });
     } catch (err) {
-      console.log(err);
+        console.log(err);
     }
-  }
+}
 
 // async function deleteNote(req, res) {
 //   try {
@@ -67,4 +71,4 @@ function login(req, res) {
 //   }
 // }
 
-module.exports = { signUp, login  /*, getAllNotes, , deleteNote*/ };
+module.exports = { signUp, login /*, getAllNotes, , deleteNote*/ };
