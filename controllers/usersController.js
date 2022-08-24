@@ -9,14 +9,6 @@ const {
 
 const newUser = require("../models/userModelMongoose");
 
-// async function getAllNotes(req, res) {
-//   try {
-//     const allNotes = getAllNotesModel()
-//     res.send(allNotes);
-//   } catch (err) {
-//     res.status(500).send(err);
-//   }
-// }
 
 async function signUp(req, res, next) {
     try {
