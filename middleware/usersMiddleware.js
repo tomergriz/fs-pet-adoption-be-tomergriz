@@ -33,33 +33,56 @@ function hashPwd(req, res, next) {
 }
 
 async function isExistingUser(req, res, next) {
-
-    console.log('userd', req.body);
-
-    const user = await getUserByEmailModel(req.body.email);
+    const user = await getUserByEmailModel(req.body.email, req.body.password);
     if (user) {
-      req.body.user = user;
-      next();
-      return;
+        req.body.user = user;
+        next();
+        return;
     }
     res.status(400).send("User with this email does not exist");
 }
 
-  async function verifyPwd(req, res, next) {
+async function verifyPwd(req, res, next) {
     const { user } = req.body;
-  
-    bcrypt.compare(req.body.password, user.password, (err, result) => {
-      if (err) {
-        res.status(500).send(err);
-        return;
-      }
-      if (result) {
-        next();
-        return;
-      } else {
-        res.status(400).send("Incorrrect Password!");
-      }
-    });
-  }
 
-module.exports = { isNewUser, passwordsMatch, hashPwd, isExistingUser };
+    bcrypt.compare(req.body.password, user.password, (err, result) => {
+        if (err) {
+            res.status(500).send(err);
+            return;
+        }
+        if (result) {
+            next();
+            return;
+        } else {
+            res.status(400).send("Incorrect Password!");
+        }
+    });
+}
+
+// async function auth(req, res, next) {
+//     if (!req.headers.authorization) {
+//       res.status(401).send("Authorization headers required");
+//       return;
+//     }
+//     const token = req.headers.authorization.replace("Bearer ", "");
+//     jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
+//       if (err) {
+//         res.status(401).send("Unauthorized");
+//         return;
+//       }
+//       if (decoded) {
+//         req.body.userId = decoded.id
+//         next();
+//         return;
+//       }
+//     });
+//   }
+
+module.exports = {
+    // auth,
+    isNewUser,
+    passwordsMatch,
+    hashPwd,
+    isExistingUser,
+    verifyPwd,
+};

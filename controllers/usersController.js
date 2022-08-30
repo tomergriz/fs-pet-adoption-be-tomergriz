@@ -6,13 +6,14 @@ const {
     getUserByEmailModel,
     deleteUserModel,
 } = require("../models/userModel");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const newUser = require("../models/userModelMongoose");
 
-
 async function signUp(req, res, next) {
     try {
-        const { email, password, firstName, lastName, phone  } = req.body;
+        const { email, password, firstName, lastName, phone } = req.body;
         const createUser = new newUser({
             email,
             password,
@@ -25,41 +26,58 @@ async function signUp(req, res, next) {
         const user = await createUser.save();
         if (user) {
             res.send(user);
-            console.log("res.send", user);
+            console.log("res user", user);
             return;
         }
     } catch (err) {
-        res.status(500).send(err);
+        res.status(500).send(err?.message || "Error creating user");
         next(err);
     }
 }
 
 async function getAllUsers(req, res) {
     try {
-      const allUsers = await getAllUsersModel();
-      console.log("allUsersControl",allUsers);
-      res.send(allUsers);
-      return allUsers;
-    } catch(err) {
-      res.status(500).send(err);
+        const allUsers = await getAllUsersModel();
+        console.log("allUsersControl", allUsers);
+        res.send(allUsers);
+        return allUsers;
+    } catch (err) {
+        res.status(500).send(err?.message || "Error getting users");
     }
-  }
-
-
-
+}
 
 function login(req, res) {
     try {
         const { user } = req.body;
-        const token = jwt.sign({ id: user.userId }, process.env.TOKEN_SECRET, {
+        const token = jwt.sign({ id: user._Id }, process.env.TOKEN_SECRET, {
             expiresIn: "2h",
         });
-        res.send({ token: token, user: user.name });
+        res.send({
+            token: token,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            phone: user.phone,
+        });
     } catch (err) {
         console.log(err);
+        res.status(500).send(err?.message || "Error login user");
     }
 }
 
+function logout(req, res) {
+    try {
+      if (req.cookies.token) {
+        res.clearCookie("token");
+        res.send({ ok: true });
+      } else {
+        throw new Error("No cookie to clear");
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(500).send(err?.message || "error clearing user");
+    }
+  }
 
 // async function deleteNote(req, res) {
 //   try {
@@ -77,4 +95,4 @@ function login(req, res) {
 //   }
 // }
 
-module.exports = { signUp, login, getAllUsers /*, getAllNotes, , deleteNote*/ };
+module.exports = { signUp, login, getAllUsers, logout /*, getAllNotes, , deleteNote*/ };

@@ -8,7 +8,7 @@ const dbCol = require("./monSchema");
 const usersRoute = require("./routes/usersRoute");
 const bodyParser = require('body-parser');
 
-// const petsRoute = require('./routes/petsRoute')
+const petsRoute = require('./routes/petsRoute')
 const db = process.env.DATABASE;
 
 mongoose.connect(db, () => {
@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/users", usersRoute);
-// app.use('/pets',  petsRoute)
+app.use('/pets',  petsRoute)
 
 app.get("*", (req, res) => {
     res.status(404).send("Page Not Found");

@@ -22,4 +22,24 @@ const loginSchema = {
     additionalProperties: false,
 };
 
-module.exports = { signUpSchema, loginSchema };
+const addPetSchema = {
+    type: "object",
+    properties: {
+        type: { type: "string", minLength: 2 },
+        name: { type: "string", minLength: 2 },
+        adoptionStatus: { type: "string" },
+        picture: { type: "string" },
+        height: { type: "number" },
+        weight: { type: "number" },
+        color: { type: "string" },
+        bio: { type: "string" },
+        hypoallergnic: { type: "boolean" },
+        dietery: { type: "array" },
+        breed: { type: "string" },
+    },
+    required: ["type", "name"],
+    additionalProperties: false,
+};
+
+
+module.exports = { signUpSchema, loginSchema, addPetSchema };

@@ -6,11 +6,10 @@ const {
     passwordsMatch,
     hashPwd,
     isExistingUser,
+    verifyPwd,
     getAllUsers,
 } = require("../middleware/usersMiddleware");
-
 const { validateBody } = require("../middleware/validateBody");
-
 const { signUpSchema, loginSchema } = require("../schemas/allSchemas");
 
 router.post(
@@ -26,7 +25,7 @@ router.post(
     "/login",
     validateBody(loginSchema),
     isExistingUser,
-    // verifyPwd,
+    verifyPwd,
     UsersController.login
 );
 router.get("/all", /*verifyToken, */ UsersController.getAllUsers)
