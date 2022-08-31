@@ -7,7 +7,6 @@ const {
     hashPwd,
     isExistingUser,
     verifyPwd,
-    getAllUsers,
 } = require("../middleware/usersMiddleware");
 const { validateBody } = require("../middleware/validateBody");
 const { signUpSchema, loginSchema } = require("../schemas/allSchemas");

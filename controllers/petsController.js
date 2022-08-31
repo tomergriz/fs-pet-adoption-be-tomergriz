@@ -1,11 +1,12 @@
 const mongoose = require("mongoose");
 // const { v4: uuidv4 } = require("uuid");
-// const {
+const {
+    getAllPetsModel,
     // getAllUsersModel,
     // signUpModel,
     // getUserByEmailModel,
     // deleteUserModel,
-// } = require("../models/petModel");
+} = require("../models/petModel");
 // const jwt = require("jsonwebtoken");
 // require("dotenv").config();
 
@@ -31,6 +32,17 @@ async function addPet(req, res, next) {
         }
 }
 
+async function getAllPets(req, res) {
+    try {
+        const allPets = await getAllPetsModel();
+        console.log("allPetsControl", allPets);
+        res.send(allPets);
+        return allPets;
+    } catch (err) {
+        res.status(500).send(err?.message || "Error getting pets");
+        console.log('allPetsControl err', err);
+    }
+}
 
     // try {
     //     const { email, password, firstName, lastName, phone } = req.body;
@@ -55,4 +67,4 @@ async function addPet(req, res, next) {
     // }
 
 
-module.exports = { addPet };
+module.exports = { addPet, getAllPets };

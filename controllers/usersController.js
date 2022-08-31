@@ -25,11 +25,12 @@ async function signUp(req, res, next) {
 
         const user = await createUser.save();
         if (user) {
-            res.send(user);
             console.log("res user", user);
+            res.send(user);
             return;
         }
     } catch (err) {
+        console.log(err);
         res.status(500).send(err?.message || "Error creating user");
         next(err);
     }
@@ -38,10 +39,10 @@ async function signUp(req, res, next) {
 async function getAllUsers(req, res) {
     try {
         const allUsers = await getAllUsersModel();
-        console.log("allUsersControl", allUsers);
         res.send(allUsers);
         return allUsers;
     } catch (err) {
+        console.log(err);
         res.status(500).send(err?.message || "Error getting users");
     }
 }
@@ -67,17 +68,17 @@ function login(req, res) {
 
 function logout(req, res) {
     try {
-      if (req.cookies.token) {
-        res.clearCookie("token");
-        res.send({ ok: true });
-      } else {
-        throw new Error("No cookie to clear");
-      }
+        if (req.cookies.token) {
+            res.clearCookie("token");
+            res.send({ ok: true });
+        } else {
+            throw new Error("No cookie to clear");
+        }
     } catch (err) {
-      console.log(err);
-      res.status(500).send(err?.message || "error clearing user");
+        console.log(err);
+        res.status(500).send(err?.message || "error clearing user");
     }
-  }
+}
 
 // async function deleteNote(req, res) {
 //   try {
@@ -95,4 +96,9 @@ function logout(req, res) {
 //   }
 // }
 
-module.exports = { signUp, login, getAllUsers, logout /*, getAllNotes, , deleteNote*/ };
+module.exports = {
+    signUp,
+    login,
+    getAllUsers,
+    logout /*, getAllNotes, , deleteNote*/,
+};

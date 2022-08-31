@@ -8,7 +8,7 @@ const { addPetSchema } = require("../schemas/allSchemas")
 // const { upload, uploadToCloudinary } = require ('../middleware/imagesMiddleware'); */
 
 router.post ("/pet", validateBody(addPetSchema), /*isNewUser,*/ PetsController.addPet)
-// router.get("all", verifyToken, PetsController.getAllPetsController);
+router.get("/all", /*verifyToken,*/ PetsController.getAllPets);
 // router.get("/",veryToken, filterSearch, PetsController.getSearchedPetsController);
 // router.get(":petId", PetsController.getPetByIdController);
 // router.get("/mypets/:userId", PetsController.getMyPets);
