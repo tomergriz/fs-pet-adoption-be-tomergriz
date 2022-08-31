@@ -27,7 +27,9 @@ async function addPet(req, res, next) {
 
         }
         } catch (err) {
-            res.status(500).send(err?.message || "Error saving pet");
+            // res.status(500).send(err?.message || "Error saving pet");
+            res.err;
+            console.log(err);
             next(err);
         }
 }

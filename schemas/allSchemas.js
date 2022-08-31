@@ -29,17 +29,16 @@ const addPetSchema = {
         name: { type: "string", minLength: 2 },
         adoptionStatus: { type: "string" },
         picture: { type: "string" },
-        height: { type: "number" },
-        weight: { type: "number" },
+        height: { type: "string" },
+        weight: { type: "string" },
         color: { type: "string" },
         bio: { type: "string" },
-        hypoallergnic: { type: "boolean" },
-        dietery: { type: "array" },
+        hypoallergnic: { type: "string" },
+        dietery: { type: "string" },
         breed: { type: "string" },
     },
     required: ["type", "name"],
     additionalProperties: false,
 };
-
 
 module.exports = { signUpSchema, loginSchema, addPetSchema };
