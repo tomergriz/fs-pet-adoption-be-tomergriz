@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const { v4: uuidv4 } = require("uuid");
 const {
     getAllUsersModel,
+    editUserModel,
     signUpModel,
     getUserByEmailModel,
     deleteUserModel,
@@ -13,13 +14,15 @@ const newUser = require("../models/userModelMongoose");
 
 async function signUp(req, res, next) {
     try {
-        const { email, password, firstName, lastName, phone } = req.body;
+        const { email, password, firstName, lastName, phone, isAdmin } =
+            req.body;
         const createUser = new newUser({
             email,
             password,
             firstName,
             lastName,
             phone,
+            isAdmin,
             date: Date.now(),
         });
 
@@ -80,6 +83,18 @@ function logout(req, res) {
     }
 }
 
+async function editUser(req, res) {
+    try {
+        // console.log("param", req.param);
+        const { userId } = req.params;
+        const user = await editUserModel(userId, req.body)
+        res.send(user)
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err.massage)
+    }
+}
+
 // async function deleteNote(req, res) {
 //   try {
 //     const {noteId} = req.params
@@ -100,5 +115,6 @@ module.exports = {
     signUp,
     login,
     getAllUsers,
-    logout /*, getAllNotes, , deleteNote*/,
+    logout,
+    editUser,
 };

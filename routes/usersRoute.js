@@ -3,7 +3,8 @@ const router = express.Router();
 const UsersController = require("../controllers/usersController");
 const {
     isNewUser,
-    passwordsMatch,
+    isEmailValid,
+    passwordsValidation,
     hashPwd,
     isExistingUser,
     verifyPwd,
@@ -15,7 +16,8 @@ router.post(
     "/signup",
     validateBody(signUpSchema),
     isNewUser,
-    passwordsMatch,
+    isEmailValid,
+    passwordsValidation,
     hashPwd,
     UsersController.signUp
 );
@@ -27,9 +29,9 @@ router.post(
     verifyPwd,
     UsersController.login
 );
-router.get("/all", /*verifyToken, */ UsersController.getAllUsers)
+router.get("/all", /*verifyToken, */ UsersController.getAllUsers);
 
-
+router.put("/:userId", /*verifyToken, */ UsersController.editUser);
 
 // router.post('/', validateBody, verifyToken, UsersController.getCurrentUser)
 // router.get('/:userId', verifyToken, UsersController.getUserById)

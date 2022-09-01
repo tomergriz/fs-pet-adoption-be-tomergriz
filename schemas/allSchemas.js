@@ -7,6 +7,7 @@ const signUpSchema = {
         firstName: { type: "string" },
         lastName: { type: "string" },
         phone: { type: "string" },
+        isAdmin: { type: "string" },
     },
     required: ["firstName", "email", "password", "rePassword"],
     additionalProperties: false,

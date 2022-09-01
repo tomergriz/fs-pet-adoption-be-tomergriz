@@ -12,9 +12,29 @@ async function isNewUser(req, res, next) {
     next();
 }
 
-function passwordsMatch(req, res, next) {
+function isEmailValid(req, res, next) {
+    {
+        if (
+            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(req.body.email)
+        ) {
+            next();
+            return;
+        }
+        res.status(400).send("You have entered an invalid email address!");
+        return;
+    }
+}
+
+function passwordsValidation(req, res, next) {
     if (req.body.password !== req.body.rePassword) {
         res.status(400).send("Passwords don't match");
+        return;
+    }
+    let passw = /^(?=.*\d).{4,8}$/;
+    if (!req.body.password.match(passw)) {
+        res.status(400).send(
+            "Password expression. Password must be between 4 and 8 digits long and include at least one numeric digit. examples: 1234 | asdf1234 | asp123"
+        );
         return;
     }
     next();
@@ -24,6 +44,7 @@ function hashPwd(req, res, next) {
     const saltRounds = 10;
     bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
         if (err) {
+            console.log(err);
             res.status(500).send(err.message);
             return;
         }
@@ -39,6 +60,7 @@ async function isExistingUser(req, res, next) {
         next();
         return;
     }
+    console.log(err);
     res.status(400).send("User with this email does not exist");
 }
 
@@ -47,6 +69,7 @@ async function verifyPwd(req, res, next) {
 
     bcrypt.compare(req.body.password, user.password, (err, result) => {
         if (err) {
+            console.log(err);
             res.status(500).send(err);
             return;
         }
@@ -54,6 +77,7 @@ async function verifyPwd(req, res, next) {
             next();
             return;
         } else {
+            console.log(err);
             res.status(400).send("Incorrect Password!");
         }
     });
@@ -81,7 +105,8 @@ async function verifyPwd(req, res, next) {
 module.exports = {
     // auth,
     isNewUser,
-    passwordsMatch,
+    isEmailValid,
+    passwordsValidation,
     hashPwd,
     isExistingUser,
     verifyPwd,

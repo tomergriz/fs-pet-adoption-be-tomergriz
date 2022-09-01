@@ -3,28 +3,44 @@ const path = require("path");
 
 const pathToUsersDb = path.resolve(__dirname, "../database/usersDb.json");
 
-const User = require ("./userModelMongoose")
-
+const User = require("./userModelMongoose");
 
 async function getUserByEmailModel(email) {
-  try {
-      const user = await User.findOne({ email: email });
-      return user;
-  } catch (err) {
-    console.log(err);
-  }
+    try {
+        const user = await User.findOne({ email: email });
+        return user;
+    } catch (err) {
+        console.log(err);
+    }
 }
 
-  
-  async function getAllUsersModel() {
-  try {
-    const allUsers = await User.find();
-    return allUsers;
-  } catch (err) {
-    console.log(err);
-  }
+async function getAllUsersModel() {
+    try {
+        const allUsers = await User.find();
+        return allUsers;
+    } catch (err) {
+        console.log(err);
+    }
 }
 
+async function editUserModel(userId, newInfo) {
+    try {
+        console.log("userId", userId);
+        console.log("newInfo", newInfo);
+        const user = await User.findByIdAndUpdate(
+            userId,
+            { $set: newInfo },
+            { new: true }
+        );
+        // const note = await Note.findById(noteId);
+        // note.text = newInfo.text;
+        // await note.save()
+
+        return user;
+    } catch (err) {
+        console.log(err);
+    }
+  }
 
 // async function updateUserByEmailModel(email) {
 //   try {
@@ -44,7 +60,6 @@ async function getUserByEmailModel(email) {
 //   }
 // }
 
-
 // for (let key in req.query) {
 //   req.query.height = { $lte: Number(minHeight), $gte: Number(maxHeight) };
 //   req.query.weight = { $lte: Number(minHight), $gte: Number(maxWeight) };
@@ -59,7 +74,7 @@ async function getUserByEmailModel(email) {
 
 // async function findPetModel(params) {
 // try {
-//     const user = await User.find({ 
+//     const user = await User.find({
 //       name: name,
 //        size : size,
 //        status : status,
@@ -70,5 +85,4 @@ async function getUserByEmailModel(email) {
 // }
 // }
 
-
-module.exports = { getAllUsersModel,  getUserByEmailModel };
+module.exports = { getAllUsersModel, getUserByEmailModel, editUserModel };
