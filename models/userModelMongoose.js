@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
     lastName: { type: String },
     phone: { type: Number },
     isAdmin: { type: Boolean, default: false },
+    id: { type: Number },
 });
 
 module.exports = mongoose.model("User", userSchema);

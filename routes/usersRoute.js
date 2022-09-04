@@ -8,6 +8,7 @@ const {
     hashPwd,
     isExistingUser,
     verifyPwd,
+    verifyToken,
 } = require("../middleware/usersMiddleware");
 const { validateBody } = require("../middleware/validateBody");
 const { signUpSchema, loginSchema } = require("../schemas/allSchemas");
@@ -29,9 +30,9 @@ router.post(
     verifyPwd,
     UsersController.login
 );
-router.get("/all", /*verifyToken, */ UsersController.getAllUsers);
+router.get("/all", UsersController.getAllUsers);
 
-router.put("/:userId", /*verifyToken, */ UsersController.editUser);
+router.put("/:userId", verifyToken, UsersController.editUser);
 
 // router.post('/', validateBody, verifyToken, UsersController.getCurrentUser)
 // router.get('/:userId', verifyToken, UsersController.getUserById)

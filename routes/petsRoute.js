@@ -13,8 +13,8 @@ router.post(
     /*isNewUser,*/ PetsController.addPet
 );
 router.get("/all", /*verifyToken,*/ PetsController.getAllPets);
+router.get("/:petId", PetsController.getPetByIdController);
 // router.get("/",veryToken, filterSearch, PetsController.getSearchedPetsController);
-// router.get(":petId", PetsController.getPetByIdController);
 // router.get("/mypets/:userId", PetsController.getMyPets);
 // router.post("/:petId/adopt", verifyToken, PetsController.adoptFosterController);
 // router.put("/:petId/save", verifyToken, PetsController.savePet);

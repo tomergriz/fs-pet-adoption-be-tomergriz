@@ -83,24 +83,25 @@ async function verifyPwd(req, res, next) {
     });
 }
 
-// async function auth(req, res, next) {
-//     if (!req.headers.authorization) {
-//       res.status(401).send("Authorization headers required");
-//       return;
-//     }
-//     const token = req.headers.authorization.replace("Bearer ", "");
-//     jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
-//       if (err) {
-//         res.status(401).send("Unauthorized");
-//         return;
-//       }
-//       if (decoded) {
-//         req.body.userId = decoded.id
-//         next();
-//         return;
-//       }
-//     });
-//   }
+async function verifyToken(req, res, next) {
+    console.log("res", res);
+    if (!req.headers.authorization) {
+        res.status(401).send("Authorization headers required");
+        return;
+    }
+    const token = req.headers.authorization.replace("Bearer ", "");
+    jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
+        if (err) {
+            res.status(401).send("Unauthorized");
+            return;
+        }
+        if (decoded) {
+            req.body.userId = decoded.id;
+            next();
+            return;
+        }
+    });
+}
 
 module.exports = {
     // auth,
@@ -110,4 +111,5 @@ module.exports = {
     hashPwd,
     isExistingUser,
     verifyPwd,
+    verifyToken,
 };

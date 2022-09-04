@@ -62,6 +62,7 @@ function login(req, res) {
             firstName: user.firstName,
             lastName: user.lastName,
             phone: user.phone,
+            id: user._id,
         });
     } catch (err) {
         console.log(err);
@@ -85,13 +86,12 @@ function logout(req, res) {
 
 async function editUser(req, res) {
     try {
-        // console.log("param", req.param);
         const { userId } = req.params;
-        const user = await editUserModel(userId, req.body)
-        res.send(user)
+        const user = await editUserModel(userId, req.body);
+        res.send(user);
     } catch (err) {
         console.log(err);
-        res.status(500).send(err.massage)
+        res.status(500).send(err.massage);
     }
 }
 

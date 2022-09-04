@@ -1,10 +1,45 @@
-const fs = require("fs");
-// const path = require("path");
+const Pet = require("./petModelMongoose");
 
-// const pathToPetsDb = path.resolve(__dirname, "../database/PetsDb.json");
+async function getAllPetsModel() {
+    try {
+        const allPets = await Pet.find();
+        return allPets;
+    } catch (err) {
+        console.log(err);
+    }
+}
 
-const Pets = require ("./petModelMongoose")
+async function getPetByIdModel(petId) {
+    try {
+        const pet = await Pet.find({ _id: petId });
+        return pet;
+    } catch (err) {
+        console.log(err);
+    }
+}
 
+// for (let key in req.query) {
+//   req.query.height = { $lte: Number(minHeight), $gte: Number(maxHeight) };
+//   req.query.weight = { $lte: Number(minHight), $gte: Number(maxWeight) };
+//   req.query.name = { $regex: name, $options: 'i' };
+//   if (req.query[key] === '' || req.query[key] === 'Any') {
+//     delete req.query[key];
+//   }
+// }
+// };
+
+// async function findPetModel(params) {
+// try {
+//     const user = await User.find({
+//       name: name,
+//        size : size,
+//        status : status,
+//       });
+//     return user;
+// } catch (err) {
+//   console.log(err);
+// }
+// }
 
 // async function getUserByEmailModel(id) {
 //   try {
@@ -14,17 +49,6 @@ const Pets = require ("./petModelMongoose")
 //     console.log(err);
 //   }
 // }
-
-  
-  async function getAllPetsModel() {
-  try {
-    const allPets = await Pets.find();
-    return allPets;
-  } catch (err) {
-    console.log(err);
-  }
-}
-
 
 // async function updateUserByEmailModel(email) {
 //   try {
@@ -44,31 +68,4 @@ const Pets = require ("./petModelMongoose")
 //   }
 // }
 
-
-// for (let key in req.query) {
-//   req.query.height = { $lte: Number(minHeight), $gte: Number(maxHeight) };
-//   req.query.weight = { $lte: Number(minHight), $gte: Number(maxWeight) };
-//   req.query.name = { $regex: name, $options: 'i' };
-//   if (req.query[key] === '' || req.query[key] === 'Any') {
-//     delete req.query[key];
-//   }
-// }
-// };
-
-// petsColletion.find(req.query)
-
-// async function findPetModel(params) {
-// try {
-//     const user = await User.find({ 
-//       name: name,
-//        size : size,
-//        status : status,
-//       });
-//     return user;
-// } catch (err) {
-//   console.log(err);
-// }
-// }
-
-
-module.exports = { getAllPetsModel /*,  getUserByEmailModel*/ };
+module.exports = { getAllPetsModel, getPetByIdModel };
