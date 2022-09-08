@@ -28,7 +28,6 @@ async function signUp(req, res, next) {
 
         const user = await createUser.save();
         if (user) {
-            console.log("res user", user);
             res.send(user);
             return;
         }
@@ -53,9 +52,13 @@ async function getAllUsers(req, res) {
 function login(req, res) {
     try {
         const { user } = req.body;
-        const token = jwt.sign({ id: user._Id }, process.env.TOKEN_SECRET, {
-            expiresIn: "2h",
-        });
+        const token = jwt.sign(
+            { email: user.email },
+            process.env.TOKEN_SECRET,
+            {
+                expiresIn: "2h",
+            }
+        );
         res.send({
             token: token,
             email: user.email,
@@ -87,6 +90,7 @@ function logout(req, res) {
 async function editUser(req, res) {
     try {
         const { userId } = req.params;
+        console.log(req.body);
         const user = await editUserModel(userId, req.body);
         res.send(user);
     } catch (err) {

@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
     phone: { type: Number },
     isAdmin: { type: Boolean, default: false },
     id: { type: Number },
+    saved: { type: Array, default: [] },
 });
 
 module.exports = mongoose.model("User", userSchema);

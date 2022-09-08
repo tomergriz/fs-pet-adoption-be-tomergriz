@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/users", usersRoute);
-app.use('/pets',  petsRoute)
+app.use("/pets", petsRoute);
 
 app.get("*", (req, res) => {
     res.status(404).send("Page Not Found");

@@ -1,6 +1,6 @@
 const { getUserByEmailModel } = require("../models/userModel");
 const bcrypt = require("bcrypt");
-// const jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 async function isNewUser(req, res, next) {
@@ -60,8 +60,8 @@ async function isExistingUser(req, res, next) {
         next();
         return;
     }
-    console.log(err);
     res.status(400).send("User with this email does not exist");
+    return;
 }
 
 async function verifyPwd(req, res, next) {
@@ -84,7 +84,7 @@ async function verifyPwd(req, res, next) {
 }
 
 async function verifyToken(req, res, next) {
-    console.log("res", res);
+    console.log(req.headers.authorization, "req.headers.authorization");
     if (!req.headers.authorization) {
         res.status(401).send("Authorization headers required");
         return;
@@ -92,11 +92,13 @@ async function verifyToken(req, res, next) {
     const token = req.headers.authorization.replace("Bearer ", "");
     jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
         if (err) {
+            console.log(err);
             res.status(401).send("Unauthorized");
             return;
         }
         if (decoded) {
-            req.body.userId = decoded.id;
+            console.log(decoded);
+            req.body.email = decoded.email;
             next();
             return;
         }

@@ -9,6 +9,24 @@ async function getUserByEmailModel(email) {
     }
 }
 
+async function savePetToUser(userEmail, petId) {
+    console.log("userEmail", userEmail);
+    console.log("petId", petId);
+    try {
+        const user = await User.findOne({ email: userEmail });
+        const check = user.saved.find((pet) => pet === petId);
+        if (check) {
+            user.saved.pull(check);
+        } else {
+            user.saved.push(petId);
+        }
+        user.save();
+        return user;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 async function getAllUsersModel() {
     try {
         const allUsers = await User.find();
@@ -21,11 +39,13 @@ async function getAllUsersModel() {
 async function editUserModel(userId, newInfo) {
     try {
         console.log("userId", userId);
-        console.log("newInfo", newInfo);
+        console.log("newInfo", { ...newInfo });
         const user = await User.findByIdAndUpdate(
             userId,
-            { $set: newInfo },
-            { new: true }
+            { ...newInfo },
+            {
+                new: true,
+            }
         );
 
         return user;
@@ -69,4 +89,9 @@ async function editUserModel(userId, newInfo) {
 //   }
 // }
 
-module.exports = { getAllUsersModel, getUserByEmailModel, editUserModel };
+module.exports = {
+    getAllUsersModel,
+    getUserByEmailModel,
+    editUserModel,
+    savePetToUser,
+};

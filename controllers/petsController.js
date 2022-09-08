@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 // const { v4: uuidv4 } = require("uuid");
 const { getAllPetsModel, getPetByIdModel } = require("../models/petModel");
+const { savePetToUser } = require("../models/userModel");
+
 // const jwt = require("jsonwebtoken");
 // require("dotenv").config();
 
@@ -39,7 +41,6 @@ async function addPet(req, res, next) {
         const pet = await createPet.save();
         if (pet) {
             res.send(pet);
-            console.log("res pet", pet);
             return;
         }
     } catch (err) {
@@ -52,7 +53,6 @@ async function addPet(req, res, next) {
 async function getAllPets(req, res) {
     try {
         const allPets = await getAllPetsModel();
-        console.log("allPetsControl", allPets);
         res.send(allPets);
         return allPets;
     } catch (err) {
@@ -65,7 +65,6 @@ async function getPetByIdController(req, res) {
     try {
         const { petId } = req.params;
         const pet = await getPetByIdModel(petId);
-        console.log(pet);
         res.send(pet);
     } catch (err) {
         res.status(500).send(err?.message || "Error getting pet");
@@ -73,4 +72,16 @@ async function getPetByIdController(req, res) {
     }
 }
 
-module.exports = { addPet, getAllPets, getPetByIdController };
+async function savePet(req, res) {
+    try {
+        const { petId } = req.params;
+        const user = await savePetToUser(req.body.email, petId);
+        console.log("userrrrr", user);
+        res.send(user);
+    } catch (err) {
+        res.status(500).send(err?.message || "Error getting pet");
+        console.log(err);
+    }
+}
+
+module.exports = { addPet, getAllPets, getPetByIdController, savePet };
