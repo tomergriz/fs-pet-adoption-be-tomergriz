@@ -9,6 +9,22 @@ async function getAllPetsModel() {
     }
 }
 
+async function getSearchedPetsModel(params) {
+    const { name, type, adoptionStatus, height, weight } = params;
+
+    try {
+        const query = {};
+        if (name) query.name = name;
+        if (type) query.type = type;
+        if (adoptionStatus) query.adoptionStatus = adoptionStatus;
+        if (height) query.height = height;
+        if (weight) query.weight = weight;
+        return await Pet.find(query);
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 async function getPetByIdModel(petId) {
     try {
         const pet = await Pet.find({ _id: petId });
@@ -27,19 +43,6 @@ async function getPetByIdModel(petId) {
 //   }
 // }
 // };
-
-// async function findPetModel(params) {
-// try {
-//     const user = await User.find({
-//       name: name,
-//        size : size,
-//        status : status,
-//       });
-//     return user;
-// } catch (err) {
-//   console.log(err);
-// }
-// }
 
 // async function getUserByEmailModel(id) {
 //   try {
@@ -68,4 +71,4 @@ async function getPetByIdModel(petId) {
 //   }
 // }
 
-module.exports = { getAllPetsModel, getPetByIdModel };
+module.exports = { getAllPetsModel, getSearchedPetsModel, getPetByIdModel };

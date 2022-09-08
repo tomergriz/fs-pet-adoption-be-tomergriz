@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 // const { v4: uuidv4 } = require("uuid");
-const { getAllPetsModel, getPetByIdModel } = require("../models/petModel");
+const { getAllPetsModel, getPetByIdModel, getSearchedPetsModel } = require("../models/petModel");
 const { savePetToUser } = require("../models/userModel");
 
 // const jwt = require("jsonwebtoken");
@@ -72,11 +72,20 @@ async function getPetByIdController(req, res) {
     }
 }
 
+async function getSearchedPetsController(req, res) {
+    try {
+        const pet = await getSearchedPetsModel(req.body);
+        res.send(pet);
+    } catch (err) {
+        res.status(500).send(err?.message || "Error getting pet");
+        console.log(err);
+    }
+}
+
 async function savePet(req, res) {
     try {
         const { petId } = req.params;
         const user = await savePetToUser(req.body.email, petId);
-        console.log("userrrrr", user);
         res.send(user);
     } catch (err) {
         res.status(500).send(err?.message || "Error getting pet");
@@ -84,4 +93,4 @@ async function savePet(req, res) {
     }
 }
 
-module.exports = { addPet, getAllPets, getPetByIdController, savePet };
+module.exports = { addPet, getAllPets, getPetByIdController, getSearchedPetsController, savePet };

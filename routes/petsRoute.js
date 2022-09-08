@@ -13,7 +13,7 @@ router.get("/all", /*verifyToken,*/ PetsController.getAllPets);
 router.get("/:petId", PetsController.getPetByIdController);
 router.put("/:petId/save", verifyToken, PetsController.savePet);
 
-// router.get("/",veryToken, filterSearch, PetsController.getSearchedPetsController);
+router.get("/",/*veryToken, filterSearch,*/ PetsController.getSearchedPetsController);
 // router.get("/mypets/:userId", PetsController.getMyPets);
 // router.post("/:petId/adopt", verifyToken, PetsController.adoptFosterController);
 
