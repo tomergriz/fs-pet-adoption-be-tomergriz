@@ -1,6 +1,5 @@
 require("dotenv").config({ path: "./config/.env" });
 const mongoose = require("mongoose");
-mongoose.set('strictQuery', false);
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT;
@@ -12,9 +11,18 @@ const bodyParser = require("body-parser");
 const petsRoute = require("./routes/petsRoute");
 const db = process.env.DATABASE;
 
-mongoose.connect(`${db}`, () => {
-    console.log("connected to Mongoose database");
+app.listen(PORT, () => {
+  console.log("Listening on port " + PORT);
 });
+
+mongoose.set('strictQuery', 'throw');
+mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log("Connected to Mongoose database");
+  })
+  .catch((error) => {
+    console.error("Error connecting to Mongoose database ", error);
+  });
 
 app.use(bodyParser.json());
 
@@ -25,9 +33,10 @@ app.use("/users", usersRoute);
 app.use("/pets", petsRoute);
 
 app.get("*", (req, res) => {
-    res.status(404).send("Page Not Found");
+  res.status(404).send("Page Not Found");
 });
 
-app.listen(PORT, () => {
-    console.log("Listening on port " + PORT);
+app.use(function(err, req, res, next) {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
 });

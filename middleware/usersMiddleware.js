@@ -1,7 +1,11 @@
 const { getUserByEmailModel } = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const jwtSecret = process.env.TOKEN_SECRET;
+
 require("dotenv").config();
+const config = require('../config/.env');
+
 
 async function isNewUser(req, res, next) {
     const user = await getUserByEmailModel(req.body.email);
@@ -83,27 +87,51 @@ async function verifyPwd(req, res, next) {
     });
 }
 
-async function verifyToken(req, res, next) {
-    console.log(req.headers.authorization, "req.headers.authorization");
-    if (!req.headers.authorization) {
-        res.status(401).send("Authorization headers required");
-        return;
+function verifyToken(req, res, next) {
+    
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.split(' ')[1];
+    if (!token) {
+        console.log('NO TOKKEN !! Authorization header:', authHeader);
+        return res.status(401).send({ message: 'No token provided.' });
     }
-    const token = req.headers.authorization.replace("Bearer ", "");
-    jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
-        if (err) {
-            console.log(err);
-            res.status(401).send("Unauthorized");
-            return;
+    
+    jwt.verify(token, jwtSecret, (err, decoded) => {
+        if (err || !decoded) {
+            console.log('Authorization header:', authHeader);
+            console.log('Token value:', decoded && decoded.token);
+            return res.status(401).send({ message: 'Failed to authenticate token.' });
         }
-        if (decoded) {
-            console.log(decoded);
-            req.body.email = decoded.email;
-            next();
-            return;
-        }
+
+        req.userId = decoded.userId;
+        next();
     });
 }
+
+
+
+
+// async function verifyToken(req, res, next) {
+//     console.log(req.headers.authorization, "req.headers.authorization");
+//     if (!req.headers.authorization) {
+//         res.status(401).send("Authorization headers required");
+//         return;
+//     }
+//     const token = req.headers.authorization.replace("Bearer ", "");
+//     jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
+//         if (err) {
+//             console.log(err);
+//             res.status(401).send("Unauthorized");
+//             return;
+//         }
+//         if (decoded) {
+//             console.log(decoded);
+//             req.body.email = decoded.email;
+//             next();
+//             return;
+//         }
+//     });
+// }
 
 module.exports = {
     // auth,

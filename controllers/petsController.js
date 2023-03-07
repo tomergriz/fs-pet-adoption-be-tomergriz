@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
-// const { v4: uuidv4 } = require("uuid");
+const { v4: uuidv4 } = require("uuid");
 const { getAllPetsModel, getPetByIdModel, getSearchedPetsModel } = require("../models/petModel");
 const { savePetToUser } = require("../models/userModel");
 
-// const jwt = require("jsonwebtoken");
-// require("dotenv").config();
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const newPet = require("../models/petModelMongoose");
 

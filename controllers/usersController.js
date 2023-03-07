@@ -67,6 +67,7 @@ function login(req, res) {
             phone: user.phone,
             id: user._id,
         });
+        console.log("TOKEN_SECRET userControl Login",TOKEN_SECRET);
     } catch (err) {
         console.log(err);
         res.status(500).send(err?.message || "Error login user");
