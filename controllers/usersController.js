@@ -56,7 +56,7 @@ function login(req, res) {
             { email: user.email },
             process.env.TOKEN_SECRET,
             {
-                expiresIn: "2h",
+                expiresIn: "15m",
             }
         );
         res.send({
@@ -67,7 +67,6 @@ function login(req, res) {
             phone: user.phone,
             id: user._id,
         });
-        console.log("TOKEN_SECRET userControl Login",TOKEN_SECRET);
     } catch (err) {
         console.log(err);
         res.status(500).send(err?.message || "Error login user");
@@ -100,21 +99,6 @@ async function editUser(req, res) {
     }
 }
 
-// async function deleteNote(req, res) {
-//   try {
-//     const {noteId} = req.params
-//     console.log(noteId);
-//     const deletedNote =  deleteNoteModel(noteId)
-//     if(deletedNote) {
-//       res.send({ok: true, deletedNote: noteId, message: 'Note Deleted'});
-//       return
-//     }
-
-//   } catch (err) {
-//     console.log(err)
-//     res.status(500).send(err);
-//   }
-// }
 
 module.exports = {
     signUp,

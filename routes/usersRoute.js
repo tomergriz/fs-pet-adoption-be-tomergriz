@@ -30,7 +30,7 @@ router.post(
     verifyPwd,
     UsersController.login
 );
-router.get("/all", UsersController.getAllUsers);
+router.get("/all", verifyToken, UsersController.getAllUsers);
 
 router.put("/:userId", verifyToken, UsersController.editUser);
 
