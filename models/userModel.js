@@ -9,6 +9,15 @@ async function getUserByEmailModel(email) {
     }
 }
 
+async function findUserById(userId) {
+    try {
+        const userInfo = await User.findById({ _id: userId });
+        return userInfo;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 async function savePetToUser(userEmail, petId) {
     console.log("userEmail", userEmail);
     console.log("petId", petId);
@@ -54,7 +63,7 @@ async function editUserModel(userId, newInfo) {
     }
 }
 
-// async function verifyToken(req, res, next) {
+// async function Auth(req, res, next) {
 //   // const { token } = req.cookies;
 //   console.log('req', req)
 //   res.send('res', res)
@@ -94,4 +103,5 @@ module.exports = {
     getUserByEmailModel,
     editUserModel,
     savePetToUser,
+    findUserById,
 };

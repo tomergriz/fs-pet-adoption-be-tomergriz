@@ -4,8 +4,7 @@ const jwt = require("jsonwebtoken");
 const jwtSecret = process.env.TOKEN_SECRET;
 
 require("dotenv").config();
-const config = require('../config/.env');
-
+const config = require("../config/.env");
 
 async function isNewUser(req, res, next) {
     const user = await getUserByEmailModel(req.body.email);
@@ -87,51 +86,24 @@ async function verifyPwd(req, res, next) {
     });
 }
 
-function verifyToken(req, res, next) {
-    
+function Auth(req, res, next) {
     const authHeader = req.headers.authorization;
-    const token = authHeader && authHeader.split(' ')[1];
+    const token = authHeader && authHeader.split(" ")[1];
     if (!token) {
-        console.log('NO TOKKEN !! Authorization header:', authHeader);
-        return res.status(401).send({ message: 'No token provided.' });
+        console.log("NO TOKKEN !! Authorization header:", authHeader);
+        return res.status(401).send({ message: "No token provided." });
     }
-    
+
     jwt.verify(token, jwtSecret, (err, decoded) => {
         if (err || !decoded) {
-            console.log('Authorization header:', authHeader);
-            console.log('Token value:', decoded && decoded.token);
-            return res.status(401).send({ message: 'Failed to authenticate token.' });
+            return res
+                .status(401)
+                .send({ message: "Failed to authenticate token." });
         }
-
-        req.userId = decoded.userId;
+        req.body.userId = decoded.id;
         next();
     });
 }
-
-
-
-
-// async function verifyToken(req, res, next) {
-//     console.log(req.headers.authorization, "req.headers.authorization");
-//     if (!req.headers.authorization) {
-//         res.status(401).send("Authorization headers required");
-//         return;
-//     }
-//     const token = req.headers.authorization.replace("Bearer ", "");
-//     jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
-//         if (err) {
-//             console.log(err);
-//             res.status(401).send("Unauthorized");
-//             return;
-//         }
-//         if (decoded) {
-//             console.log(decoded);
-//             req.body.email = decoded.email;
-//             next();
-//             return;
-//         }
-//     });
-// }
 
 module.exports = {
     // auth,
@@ -141,5 +113,5 @@ module.exports = {
     hashPwd,
     isExistingUser,
     verifyPwd,
-    verifyToken,
+    Auth,
 };

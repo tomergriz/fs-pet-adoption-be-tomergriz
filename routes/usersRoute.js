@@ -8,10 +8,11 @@ const {
     hashPwd,
     isExistingUser,
     verifyPwd,
-    verifyToken,
+    Auth,
 } = require("../middleware/usersMiddleware");
 const { validateBody } = require("../middleware/validateBody");
 const { signUpSchema, loginSchema } = require("../schemas/allSchemas");
+const { isAdmin } = require("../Middleware/AdminMiddleWare");
 
 router.post(
     "/signup",
@@ -30,13 +31,16 @@ router.post(
     verifyPwd,
     UsersController.login
 );
-router.get("/all", verifyToken, UsersController.getAllUsers);
 
-router.put("/:userId", verifyToken, UsersController.editUser);
+router.get("/logout", UsersController.logout);
 
-// router.post('/', validateBody, verifyToken, UsersController.getCurrentUser)
-// router.get('/:userId', verifyToken, UsersController.getUserById)
-// router.put('/:userId', verifyToken, UsersController.editUser)
+router.get("/all", Auth, isAdmin, UsersController.getAllUsers);
+
+router.put("/:userId", Auth, UsersController.editUser);
+
+// router.post('/', validateBody, Auth, UsersController.getCurrentUser)
+// router.get('/:userId', Auth, UsersController.getUserById)
+// router.put('/:userId', Auth, UsersController.editUser)
 
 // router.delete("/user/:user", (req, res) => {
 //     res.send("Got a DELETE request to path /user/user/:user");

@@ -52,19 +52,15 @@ async function getAllUsers(req, res) {
 function login(req, res) {
     try {
         const { user } = req.body;
-        const token = jwt.sign(
-            { email: user.email },
-            process.env.TOKEN_SECRET,
+        const token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET,
             {
                 expiresIn: "15m",
             }
-        );
+            );
         res.send({
             token: token,
-            email: user.email,
             firstName: user.firstName,
             lastName: user.lastName,
-            phone: user.phone,
             id: user._id,
         });
     } catch (err) {
@@ -75,7 +71,7 @@ function login(req, res) {
 
 function logout(req, res) {
     try {
-        if (req.cookies.token) {
+        if (req.headers.cookie) {
             res.clearCookie("token");
             res.send({ ok: true });
         } else {
