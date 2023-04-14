@@ -10,19 +10,7 @@ const newPet = require("../models/petModelMongoose");
 
 async function addPet(req, res, next) {
     try {
-        const {
-            type,
-            name,
-            adoptionStatus,
-            picture,
-            height,
-            weight,
-            color,
-            bio,
-            hypoallergnic,
-            dietery,
-            breed,
-        } = req.body;
+        const { type, name, adoptionStatus, picture, height, weight, color, bio, hypoallergnic, dietery, breed } = req.body;
         const createPet = new newPet({
             type,
             name,
@@ -74,8 +62,8 @@ async function getPetByIdController(req, res) {
 
 async function getSearchedPetsController(req, res) {
     try {
-        const pet = await getSearchedPetsModel(req.body);
-        res.send(pet);
+        const searchPets = await getSearchedPetsModel(req.body);
+        res.send(searchPets);
     } catch (err) {
         res.status(500).send(err?.message || "Error getting pet");
         console.log(err);

@@ -11,17 +11,18 @@ const petsRoute = require("./routes/petsRoute");
 const db = process.env.MONGO_URI;
 
 app.listen(PORT, () => {
-  console.log("Listening on port " + PORT);
+    console.log("Listening on port " + PORT);
 });
 
-mongoose.set('strictQuery', 'throw');
-mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-    console.log("Connected to Mongoose database");
-  })
-  .catch((error) => {
-    console.error("Error connecting to Mongoose database ", error);
-  });
+mongoose.set("strictQuery", "throw");
+mongoose
+    .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
+        console.log("Connected to Mongoose database");
+    })
+    .catch((error) => {
+        console.error("Error connecting to Mongoose database ", error);
+    });
 
 app.use(bodyParser.json());
 
@@ -32,14 +33,13 @@ app.use("/users", usersRoute);
 app.use("/pets", petsRoute);
 
 app.get("*", (req, res) => {
-  res.status(404).send("Page Not Found");
+    res.status(404).send("Page Not Found");
 });
 
-app.use(function(err, req, res, next) {
-  console.error(err.stack);
-  res.status(500).send('Something broke!');
+app.use(function (err, req, res, next) {
+    console.error(err.stack);
+    res.status(500).send("Something broke!");
 });
-
 
 // const jwt = require('jsonwebtoken');
 

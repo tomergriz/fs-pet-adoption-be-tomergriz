@@ -1,12 +1,6 @@
 const mongoose = require("mongoose");
 const { v4: uuidv4 } = require("uuid");
-const {
-    getAllUsersModel,
-    editUserModel,
-    signUpModel,
-    getUserByEmailModel,
-    deleteUserModel,
-} = require("../models/userModel");
+const { getAllUsersModel, editUserModel, signUpModel, getUserByEmailModel, findUserById, deleteUserModel } = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
@@ -14,8 +8,7 @@ const newUser = require("../models/userModelMongoose");
 
 async function signUp(req, res, next) {
     try {
-        const { email, password, firstName, lastName, phone, isAdmin } =
-            req.body;
+        const { email, password, firstName, lastName, phone, isAdmin } = req.body;
         const createUser = new newUser({
             email,
             password,
@@ -38,6 +31,21 @@ async function signUp(req, res, next) {
     }
 }
 
+async function getCurrentUser(req, res, next) {
+    try {
+        const { userId } = req.body;
+        const currentUser = await findUserById(userId);
+        if (currentUser) {
+            res.send(currentUser);
+            return;
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err?.message || "Error getting user");
+        next(err);
+    }
+}
+
 async function getAllUsers(req, res) {
     try {
         const allUsers = await getAllUsersModel();
@@ -52,15 +60,14 @@ async function getAllUsers(req, res) {
 function login(req, res) {
     try {
         const { user } = req.body;
-        const token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET,
-            {
-                expiresIn: "15m",
-            }
-            );
+        const token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET, {
+            expiresIn: "15m",
+        });
         res.send({
             token: token,
             firstName: user.firstName,
             lastName: user.lastName,
+            isAdmin: user.isAdmin,
             id: user._id,
         });
     } catch (err) {
@@ -71,14 +78,13 @@ function login(req, res) {
 
 function logout(req, res) {
     try {
-        if (req.headers.cookie) {
+        if (req.headers.authorization) {
             res.clearCookie("token");
             res.send({ ok: true });
         } else {
             throw new Error("No cookie to clear");
         }
     } catch (err) {
-        console.log(err);
         res.status(500).send(err?.message || "error clearing user");
     }
 }
@@ -95,11 +101,11 @@ async function editUser(req, res) {
     }
 }
 
-
 module.exports = {
     signUp,
     login,
     getAllUsers,
     logout,
     editUser,
+    getCurrentUser,
 };

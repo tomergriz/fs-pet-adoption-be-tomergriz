@@ -90,7 +90,6 @@ function Auth(req, res, next) {
     const authHeader = req.headers.authorization;
     const token = authHeader && authHeader.split(" ")[1];
     if (!token) {
-        console.log("NO TOKKEN !! Authorization header:", authHeader);
         return res.status(401).send({ message: "No token provided." });
     }
 
