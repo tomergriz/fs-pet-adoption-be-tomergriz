@@ -10,7 +10,8 @@ const newPet = require("../models/petModelMongoose");
 
 async function addPet(req, res, next) {
     try {
-        const { type, name, adoptionStatus, picture, height, weight, color, bio, hypoallergnic, dietery, breed } = req.body;
+        const { type, name, adoptionStatus, picture, height, weight, color, bio, hypoallergnic, dietery, breed } =
+            req.body;
         const createPet = new newPet({
             type,
             name,
@@ -45,7 +46,6 @@ async function getAllPets(req, res) {
         return allPets;
     } catch (err) {
         res.status(500).send(err?.message || "Error getting pets");
-        console.log("allPetsControl err", err);
     }
 }
 
