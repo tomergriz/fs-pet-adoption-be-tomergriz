@@ -6,12 +6,13 @@ const PORT = process.env.PORT;
 const cors = require("cors");
 const usersRoute = require("./routes/usersRoute");
 const bodyParser = require("body-parser");
+const PORT = process.env.PORT || 3000;
 
 const petsRoute = require("./routes/petsRoute");
 const db = process.env.MONGO_URI;
 
 app.listen(PORT, () => {
-    console.log("Listening on port " + PORT);
+    console.log(`Server listening on port ${PORT}`);
 });
 
 mongoose.set("strictQuery", "throw");
