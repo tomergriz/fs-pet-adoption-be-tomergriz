@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const jwtSecret = process.env.TOKEN_SECRET;
 
 require("dotenv").config();
-const config = require("../config/.env");
+// const config = require("../config/.env");
 
 async function isNewUser(req, res, next) {
     const user = await getUserByEmailModel(req.body.email);
