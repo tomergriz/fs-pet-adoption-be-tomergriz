@@ -1,5 +1,5 @@
 # dependencies
-node_modules
+node_modules/*
 package-lock.json
 
 # build output
@@ -9,6 +9,9 @@ package-lock.json
 # misc
 .env
 .env.*
+.idea/*
+images/*
+!images/.gitkeep
 functions
 *.log
 npm-debug.log*
