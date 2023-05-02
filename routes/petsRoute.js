@@ -4,9 +4,9 @@ const PetsController = require("../controllers/petsController");
 const { validateBody } = require("../middleware/validateBody");
 const { addPetSchema } = require("../schemas/allSchemas");
 const { Auth } = require("../middleware/usersMiddleware");
-const { filterBody } = require("../Middleware/PetsMiddleware");
-const { isAdmin } = require("../Middleware/AdminMiddleWare");
-const { upload, uploadToCloudinary } = require("../Middleware/ImagesMiddleware");
+const { filterBody } = require("../middleware/PetsMiddleware");
+const { isAdmin } = require("../middleware/AdminMiddleWare");
+const { upload, uploadToCloudinary } = require("../middleware/ImagesMiddleware");
 
 
 router.post("/search", filterBody, PetsController.getSearchedPetsController);
