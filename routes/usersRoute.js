@@ -4,7 +4,7 @@ const UsersController = require("../controllers/usersController");
 const { isNewUser, isEmailValid, passwordsValidation, hashPwd, isExistingUser, verifyPwd, Auth } = require("../middleware/usersMiddleware");
 const { validateBody } = require("../middleware/validateBody");
 const { signUpSchema, loginSchema } = require("../schemas/allSchemas");
-const { isAdmin } = require("../Middleware/AdminMiddleWare");
+const { isAdmin } = require("../middleware/AdminMiddleWare");
 
 router.post("/signup", validateBody(signUpSchema), isNewUser, isEmailValid, passwordsValidation, hashPwd, UsersController.signUp);
 router.post("/login", validateBody(loginSchema), isExistingUser, verifyPwd, UsersController.login);
